@@ -1,145 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Topics Page</title>
-
-  <style>
-    /* ---- GENERAL ---- */
-    .hidden {
-      display: none;
-    }
-
-    .page-card {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      margin-bottom: 20px;
-      transition: 0.3s ease;
-    }
-
-    .topic-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* ---- TOPIC HEADER ---- */
-    .topic-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .topic-label {
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #444;
-    }
-
-    /* ---- TOPIC BUTTON ---- */
-    .topic-btn {
-      padding: 10px 16px;
-      background: #4b7bec;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .topic-btn:hover {
-      background: #3867d6;
-    }
-
-    /* ---- SUBTOPICS ---- */
-    .subtopics {
-      padding-left: 10px;
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-
-      /* Animation */
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: opacity 0.4s ease, max-height 0.4s ease;
-    }
-
-    .subtopics.show {
-      opacity: 1;
-      max-height: 1000px; /* Safe large value */
-    }
-
-    /* ---- SUBTOPIC BUTTON ---- */
-    .sub-button {
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      text-decoration: none;
-      color: #333;
-      background: #f9f9f9;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .sub-button:hover {
-      background: #ececec;
-      border-color: #bbb;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UHV-2 Exam Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        #timer-box {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #ff4747;
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            display: none;
+            z-index: 999;
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 60px;
+            resize: vertical;
+        }
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .question {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Countdown Timer -->
+    <div id="timer-box">Time Left: <span id="countdown"></span></div>
 
-  <!-- Main Topics Area -->
-  <section id="topicsArea" class="page-card">
-    <div class="topic-container">
-
-      <div class="topic-row">
-        <div class="topic-label">Subject-1 :</div>
-        <button 
-          class="topic-btn" 
-          aria-expanded="false" 
-          data-toggle-sub="#uhv2-subtopics">
-          UHV-2
-        </button>
-      </div>
-
-      <div id="uhv2-subtopics" class="subtopics" aria-hidden="true">
-        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-01/">Unit - 01</a>
-        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-02/">Unit - 02</a>
-        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-03/">Unit - 03</a>
-        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-04/">Unit - 04</a>
-        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-05/">Unit - 05</a>
-      </div>
-
+    <div id="info-form">
+        <h2>Enter Your Details to Start the Exam</h2>
+        <form id="user-info">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+            
+            <label for="regno">College Register No.:</label>
+            <input type="text" id="regno" required>
+            
+            <label for="mobile">Mobile No.:</label>
+            <input type="tel" id="mobile" required>
+            
+            <label for="email">Email ID:</label>
+            <input type="email" id="email" required>
+            
+            <button type="button" onclick="startExam()">Start Exam</button>
+        </form>
     </div>
-  </section>
 
-  <script>
-    document.addEventListener("click", function (e) {
-      if (e.target.matches("[data-toggle-sub]")) {
-        const button = e.target;
-        const subId = button.getAttribute("data-toggle-sub");
-        const subSection = document.querySelector(subId);
+    <div id="exam-form" class="hidden">
+        <h2>UHV-2 Exam (10 Questions, 7 Marks Each)</h2>
+        <form id="answers">
+            <div class="question">
+                <h3>1. Explain the need and importance of universal human values.</h3>
+                <textarea id="q1p1" placeholder="Point 1"></textarea>
+                <textarea id="q1p2" placeholder="Point 2"></textarea>
+                <textarea id="q1p3" placeholder="Point 3"></textarea>
+                <textarea id="q1p4" placeholder="Point 4"></textarea>
+                <textarea id="q1p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>2. What are the methods to fulfil the human aspirations?</h3>
+                <textarea id="q2p1" placeholder="Point 1"></textarea>
+                <textarea id="q2p2" placeholder="Point 2"></textarea>
+                <textarea id="q2p3" placeholder="Point 3"></textarea>
+                <textarea id="q2p4" placeholder="Point 4"></textarea>
+                <textarea id="q2p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>3. Examine the Harmony in human being as a co-existence?</h3>
+                <textarea id="q3p1" placeholder="Point 1"></textarea>
+                <textarea id="q3p2" placeholder="Point 2"></textarea>
+                <textarea id="q3p3" placeholder="Point 3"></textarea>
+                <textarea id="q3p4" placeholder="Point 4"></textarea>
+                <textarea id="q3p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>4. Explain the meaning of prosperity and discuss the role of prosperity?</h3>
+                <textarea id="q4p1" placeholder="Point 1"></textarea>
+                <textarea id="q4p2" placeholder="Point 2"></textarea>
+                <textarea id="q4p3" placeholder="Point 3"></textarea>
+                <textarea id="q4p4" placeholder="Point 4"></textarea>
+                <textarea id="q4p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>5. Describe the meaning and justice of human relations.</h3>
+                <textarea id="q5p1" placeholder="Point 1"></textarea>
+                <textarea id="q5p2" placeholder="Point 2"></textarea>
+                <textarea id="q5p3" placeholder="Point 3"></textarea>
+                <textarea id="q5p4" placeholder="Point 4"></textarea>
+                <textarea id="q5p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>6. What is the concept of ideal family and describe its importance.</h3>
+                <textarea id="q6p1" placeholder="Point 1"></textarea>
+                <textarea id="q6p2" placeholder="Point 2"></textarea>
+                <textarea id="q6p3" placeholder="Point 3"></textarea>
+                <textarea id="q6p4" placeholder="Point 4"></textarea>
+                <textarea id="q6p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>7. Define the Nature and its equanimity.</h3>
+                <textarea id="q7p1" placeholder="Point 1"></textarea>
+                <textarea id="q7p2" placeholder="Point 2"></textarea>
+                <textarea id="q7p3" placeholder="Point 3"></textarea>
+                <textarea id="q7p4" placeholder="Point 4"></textarea>
+                <textarea id="q7p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>8. Explain the Interconnectedness and mutual fulfilment among the four orders of nature.</h3>
+                <textarea id="q8p1" placeholder="Point 1"></textarea>
+                <textarea id="q8p2" placeholder="Point 2"></textarea>
+                <textarea id="q8p3" placeholder="Point 3"></textarea>
+                <textarea id="q8p4" placeholder="Point 4"></textarea>
+                <textarea id="q8p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>9. What do you mean by Definitiveness of Ethical Human Conduct?</h3>
+                <textarea id="q9p1" placeholder="Point 1"></textarea>
+                <textarea id="q9p2" placeholder="Point 2"></textarea>
+                <textarea id="q9p3" placeholder="Point 3"></textarea>
+                <textarea id="q9p4" placeholder="Point 4"></textarea>
+                <textarea id="q9p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <div class="question">
+                <h3>10. Explain the role of managers for transition from the present state to Universal Human Order.</h3>
+                <textarea id="q10p1" placeholder="Point 1"></textarea>
+                <textarea id="q10p2" placeholder="Point 2"></textarea>
+                <textarea id="q10p3" placeholder="Point 3"></textarea>
+                <textarea id="q10p4" placeholder="Point 4"></textarea>
+                <textarea id="q10p5" placeholder="Point 5"></textarea>
+            </div>
+            
+            <button type="button" onclick="showConfirm()">Submit Exam</button>
+        </form>
+    </div>
 
-        if (!subSection) return;
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3>Are you sure you want to submit the test?</h3>
+            <button onclick="confirmSubmit()">Yes</button>
+            <button onclick="cancelSubmit()">No</button>
+        </div>
+    </div>
 
-        const isExpanded = button.getAttribute("aria-expanded") === "true";
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // FIXED EXAM START & END TIME
+        // PREVENT MULTIPLE ATTEMPTS FROM SAME DEVICE
+if (localStorage.getItem("uhv2_submitted") === "true") {
+    alert("You have already submitted the exam from this device. You are not eligible to write it again.");
+    document.body.innerHTML = "<h2 style='text-align:center; color:red; margin-top:50px;'>You have already submitted the exam.<br>This device cannot attempt again.</h2>";
+}
 
-        // Toggle classes
-        subSection.classList.toggle("show");
+        const examStart = new Date("November 16, 2025 20:00:00");
+        const examEnd = new Date("November 16, 2025 20:40:00");
+        let timerInterval;
 
-        // Update ARIA
-        button.setAttribute("aria-expanded", (!isExpanded).toString());
-        subSection.setAttribute("aria-hidden", isExpanded.toString());
-      }
-    });
-  </script>
+        function startExam() {
+            const now = new Date();
+            if (now < examStart) {
+                alert("The exam has not started yet. Exam starts at 8:00 PM.");
+                return;
+            }
+            if (now > examEnd) {
+                alert("The exam is already over.");
+                return;
+            }
+            const name = document.getElementById('name').value.trim();
+            const regno = document.getElementById('regno').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            if (!name || !regno || !mobile || !email) {
+                alert('Please fill all details.');
+                return;
+            }
+            
+            document.getElementById('info-form').classList.add('hidden');
+            document.getElementById('exam-form').classList.remove('hidden');
+            document.getElementById('timer-box').style.display = 'block';
+            startCountdown();
+        }
 
+        function startCountdown() {
+            timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = examEnd.getTime() - now;
+                if (distance <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("countdown").innerHTML = "00:00";
+                    alert("Time is over! Your exam is auto-submitted.");
+                    autoSubmit();
+                    return;
+                }
+                const minutes = Math.floor((distance / 1000) / 60);
+                const seconds = Math.floor((distance / 1000) % 60);
+                document.getElementById("countdown").innerHTML =
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" +
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }, 1000);
+        }
+
+        function autoSubmit() {
+            collectData();
+            const scores = evaluateAnswers(answersData);
+            const total = scores.reduce((a, b) => a + b, 0).toFixed(1);
+                localStorage.setItem("uhv2_submitted", "true");
+            generateCertificate(userData, total, scores);
+        }
+
+        const keyphrases = {
+            q1: ['shape life', 'understand needs', 'remove confusions', 'build bonds', 'overcome negativity'],
+            q2: ['right understanding', 'build relationships', 'physical facilities', 'harmony living', 'self-reflection'],
+            q3: ['inner peace through self-understanding', 'mutual respect and trust', 'undivided and universal order', 'recyclability and mutual fulfillment', 'coexistence in space'],
+            q4: ['feeling of having more than required facilities', 'ensures fulfillment of body needs for harmony', 'differentiate from hoarding excess goods', 'correctly assess physical requirements', 'contributes to overall well-being'],
+            q5: ['mutual respect recognizing worth', 'justice fair treatment', 'trust belief positive', 'respect valuing without differentiation', 'harmony peaceful coexistence'],
+            q6: ['mutual respect and support', 'provides stability', 'promotes well-being', 'facilitates communication', 'supports growth'],
+            q7: ['nature as all physical entities', 'equanimity as balanced', 'harmony as interconnected', 'self-sustain through cycles', 'human learn by observing'],
+            q8: ['four orders material plant animal human', 'interconnected link', 'mutual fulfill', 'balance keep', 'human role'],
+            q9: ['clear ethical guidelines', 'right actions always', 'from harmony understanding', 'act responsibly ethically', 'leads to universal good'],
+            q10: ['guide ethical change', 'transition strategy', 'individual level', 'society level', 'harmony achieve']
+        };
+
+        let answersData = {};
+        let userData = {};
+
+        function collectData() {
+            answersData = {};
+            for (let q = 1; q <= 10; q++) {
+                answersData[`q${q}`] = [];
+                for (let p = 1; p <= 5; p++) {
+                    answersData[`q${q}`].push(document.getElementById(`q${q}p${p}`).value.trim());
+                }
+            }
+            userData = {
+                name: document.getElementById('name').value,
+                regno: document.getElementById('regno').value,
+                mobile: document.getElementById('mobile').value,
+                email: document.getElementById('email').value
+            };
+        }
+
+        function showConfirm() {
+            collectData();
+            document.getElementById('confirm-modal').style.display = 'block';
+        }
+
+        function cancelSubmit() {
+            document.getElementById('confirm-modal').style.display = 'none';
+        }
+
+        function confirmSubmit() {
+            document.getElementById('confirm-modal').style.display = 'none';
+            const scores = evaluateAnswers(answersData);
+            const total = scores.reduce((a, b) => a + b, 0).toFixed(1);
+            localStorage.setItem("uhv2_submitted", "true");
+
+            generateCertificate(userData, total, scores);
+        }
+
+        function evaluateAnswers(answers) {
+            const scores = [];
+            for (let q = 1; q <= 10; q++) {
+                let pointCount = 0;
+                const userPoints = answers[`q${q}`] || [];
+                const keyset = keyphrases[`q${q}`] || [];
+                const keys = keyset.map(k => k.toLowerCase());
+                userPoints.forEach(point => {
+                    const lowPoint = point.toLowerCase().trim();
+                    if (lowPoint && keys.some(key => lowPoint.includes(key))) {
+                        pointCount++;
+                    }
+                });
+                const score = Math.min(pointCount * 1.4, 7);
+                scores.push(score);
+            }
+            return scores;
+        }
+
+        function generateCertificate(user, total, scores) {
+            const avg = 35;
+            const isGreat = total >= avg;
+            const message = isGreat ? 'Great Job! Keep up the excellent work.' : 'Improve your score. Read better for tomorrow\'s exam.';
+            const messageColor = isGreat ? 'green' : 'red';
+            const currentDate = new Date().toLocaleDateString();
+
+            const certHtml = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Certificate - UHV-2 Exam</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: linear-gradient(to bottom, #f0f8ff, #e6f3ff); padding: 20px; text-align: center; }
+                        .certificate { max-width: 800px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+                        h1 { color: #007bff; }
+                        .details { margin: 20px 0; font-size: 18px; }
+                        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: ${isGreat ? 'linear-gradient(green, lightgreen)' : 'linear-gradient(red, pink)'}; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: white; }
+                        .message { font-size: 20px; color: ${messageColor}; margin: 20px 0; }
+                        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px; }
+                        @media (max-width: 480px) { .certificate { padding: 20px; } .score-circle { width: 120px; height: 120px; font-size: 36px; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate">
+                        <h1>Certificate of Completion</h1>
+                        <h2>UHV-2: Understanding Harmony Exam</h2>
+                        <div class="details">
+                            <p><strong>Name:</strong> ${user.name}</p>
+                            <p><strong>Register No.:</strong> ${user.regno}</p>
+                            <p><strong>Mobile:</strong> ${user.mobile}</p>
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>Date:</strong> ${currentDate}</p>
+                        </div>
+                        <div class="score-circle">${total}/70</div>
+                        <div class="message">${message}</div>
+                        <button onclick="window.print()">Print Certificate</button>
+                    </div>
+                </body>
+                </html>
+            `;
+            const certWindow = window.open('', '_blank');
+            certWindow.document.write(certHtml);
+            certWindow.document.close();
+            alert(`Exam submitted! Total Marks: ${total}/70. Check the new tab for your certificate.`);
+        }
+    </script>
 </body>
 </html>
