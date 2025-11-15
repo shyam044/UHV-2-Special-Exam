@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Topics Page</title>
+
+  <style>
+    /* ---- GENERAL ---- */
+    .hidden {
+      display: none;
+    }
+
+    .page-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      transition: 0.3s ease;
+    }
+
+    .topic-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ---- TOPIC HEADER ---- */
+    .topic-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topic-label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    /* ---- TOPIC BUTTON ---- */
+    .topic-btn {
+      padding: 10px 16px;
+      background: #4b7bec;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .topic-btn:hover {
+      background: #3867d6;
+    }
+
+    /* ---- SUBTOPICS ---- */
+    .subtopics {
+      padding-left: 10px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      /* Animation */
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.4s ease, max-height 0.4s ease;
+    }
+
+    .subtopics.show {
+      opacity: 1;
+      max-height: 1000px; /* Safe large value */
+    }
+
+    /* ---- SUBTOPIC BUTTON ---- */
+    .sub-button {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      text-decoration: none;
+      color: #333;
+      background: #f9f9f9;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sub-button:hover {
+      background: #ececec;
+      border-color: #bbb;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Topics Area -->
+  <section id="topicsArea" class="page-card">
+    <div class="topic-container">
+
+      <div class="topic-row">
+        <div class="topic-label">Subject-1 :</div>
+        <button 
+          class="topic-btn" 
+          aria-expanded="false" 
+          data-toggle-sub="#uhv2-subtopics">
+          UHV-2
+        </button>
+      </div>
+
+      <div id="uhv2-subtopics" class="subtopics" aria-hidden="true">
+        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-01/">Unit - 01</a>
+        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-02/">Unit - 02</a>
+        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-03/">Unit - 03</a>
+        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-04/">Unit - 04</a>
+        <a class="sub-button" href="https://shyam044.github.io/UHV-2-Unit-05/">Unit - 05</a>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener("click", function (e) {
+      if (e.target.matches("[data-toggle-sub]")) {
+        const button = e.target;
+        const subId = button.getAttribute("data-toggle-sub");
+        const subSection = document.querySelector(subId);
+
+        if (!subSection) return;
+
+        const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+        // Toggle classes
+        subSection.classList.toggle("show");
+
+        // Update ARIA
+        button.setAttribute("aria-expanded", (!isExpanded).toString());
+        subSection.setAttribute("aria-hidden", isExpanded.toString());
+      }
+    });
+  </script>
+
+</body>
+</html>
